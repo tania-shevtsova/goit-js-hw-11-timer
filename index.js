@@ -1,13 +1,4 @@
-// class CountdownTimer{
-
-// }
-
 const CountdownTimer = {
-  // selector: '#timer-1',
-  // targetDate: new Date('Jul 17, 2019'),
-  // currentTime: Date.now(),
-  // time: this.targetDate-this.currentTime,
-
   start() {
     const targetDate = new Date("Dec 20, 2020");
     const tim = document.querySelector("#timer-1");
