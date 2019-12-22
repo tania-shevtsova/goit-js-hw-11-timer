@@ -1,43 +1,49 @@
-const CountdownTimer = {
+class CountdownTimer {
+  constructor(obj) {
+    this.selector = obj.selector;
+    this.targetDate = obj.targetDate;
+    this.day = document.querySelector('span[data-value="days"]');
+    this.hour = document.querySelector('span[data-value="hours"]');
+    this.min = document.querySelector('span[data-value="mins"]');
+    this.sec = document.querySelector('span[data-value="secs"]');
+  }
   start() {
-    const targetDate = new Date("Dec 20, 2020");
-    const tim = document.querySelector("#timer-1");
     this.timerId = setInterval(() => {
-      const currentTime = Date.now();
-      const time = targetDate - currentTime;
-      const days = pad(Math.floor(time / (1000 * 60 * 60 * 24)));
-      const hours = pad(
-        Math.floor((time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+      this.currentTime = Date.now();
+      this.time = this.targetDate - this.currentTime;
+      this.days = this.pad(Math.floor(this.time / (1000 * 60 * 60 * 24)));
+      this.hours = this.pad(
+        Math.floor((this.time % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
       );
-      const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
-      const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
+      this.mins = this.pad(
+        Math.floor((this.time % (1000 * 60 * 60)) / (1000 * 60))
+      );
+      this.secs = this.pad(Math.floor((this.time % (1000 * 60)) / 1000));
 
-      if (targetDate.valueOf() <= currentTime.valueOf()) {
+      if (this.targetDate.valueOf() <= this.currentTime.valueOf()) {
         clearInterval(this.timerId);
-        update("00", "00", "00", "00");
+        this.update("00", "00", "00", "00");
       } else {
-        update(days, hours, mins, secs);
+        this.update(this.days, this.hours, this.mins, this.secs);
       }
     }, 1000);
   }
-};
 
-const refs = {
-  day: document.querySelector('span[data-value="days"]'),
-  hour: document.querySelector('span[data-value="hours"]'),
-  min: document.querySelector('span[data-value="mins"]'),
-  sec: document.querySelector('span[data-value="secs"]')
-};
+  update(num1, num2, num3, num4) {
+    this.day.textContent = `${num1}`;
+    this.hour.textContent = `${num2}`;
+    this.min.textContent = `${num3}`;
+    this.sec.textContent = `${num4}`;
+  }
 
-function update(num1, num2, num3, num4) {
-  refs.day.textContent = `${num1}`;
-  refs.hour.textContent = `${num2}`;
-  refs.min.textContent = `${num3}`;
-  refs.sec.textContent = `${num4}`;
+  pad(value) {
+    return String(value).padStart(2, "0");
+  }
 }
 
-function pad(value) {
-  return String(value).padStart(2, "0");
-}
+const timer = new CountdownTimer({
+  selector: "#timer-1",
+  targetDate: new Date("Dec 20, 2020")
+});
 
-CountdownTimer.start();
+timer.start();
